@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 __package_name__ = "validations-engine"
-__version__ = "0.0.0"
+__version__ = "0.0.1"
 __repository_url__ = "https://github.com/quintoandar/validations-engine"
 
 

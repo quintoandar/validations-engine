@@ -85,7 +85,7 @@ type-check:
 
 .PHONY: checks
 ## run all code checks
-checks: style-check type-check
+checks: type-check style-check
 
 .PHONY: apply-style
 ## run black to fix code style
