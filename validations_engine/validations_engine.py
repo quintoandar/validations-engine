@@ -1,3 +1,4 @@
+"""Validations Engine main class."""
 import importlib
 import pathlib
 import sys
@@ -5,7 +6,7 @@ from glob import glob
 from inspect import isclass
 from os.path import dirname
 from types import ModuleType
-from typing import List
+from typing import List, Any, Dict
 
 from validations_engine.SlackHelper import SlackHelper
 from validations_engine.base_validation_suites_executor import (
@@ -16,6 +17,7 @@ from validations_engine.base_validation_suites_executor import (
 class ValidationsEngine:
     """
     The Validator engine main file.
+
     This class is responsible for parsing all validation suites and running
      its validation methods individually.
     """
@@ -24,17 +26,18 @@ class ValidationsEngine:
         self._validation_suites = self.load_validation_suites(
             validations_suites_root_path
         )
-        self.connections_auth_params = (
-            None  # Stores all auth params for conn validations
-        )
-        self._suites_have_failures = False  # Controls validations state
-        self.error_messages = []
+        # Stores all auth params for conn validations
+        self.connections_auth_params = {}  # type: ignore
+        # Controls validations state
+        self._suites_have_failures = False
+        self.error_messages = []  # type: ignore
 
     @staticmethod
     def _list_validation_suites_files(validations_suites_root_path: str) -> List[str]:
         """
         Lists all the validation suites files inside root.
-        Searches for any file `*_validation_suite.py` anywhere inside root path.
+
+        Searches for any file `*_validation_suite.py` anywhere below root path.
         """
         validation_suites_classes_pattern = (
             f"{validations_suites_root_path}/**/*_validation_suite.py"
@@ -47,8 +50,10 @@ class ValidationsEngine:
     @staticmethod
     def _import_suite_module(suite_file_path: str) -> ModuleType:
         """
+        Imports each suite's module.
+
         Dynamically loads the file's module into system registered modules
-         and returns its reference
+         and returns its reference.
         """
         module_path = dirname(suite_file_path)
 
@@ -66,7 +71,7 @@ class ValidationsEngine:
     def _load_suite_classes_from_module(
         module: ModuleType,
     ) -> List[BaseValidationSuitesExecutor]:
-        """Parses and loads the *Suite classes from module"""
+        """Parses and loads the *Suite classes from module."""
         validation_suites_classes = []
         for class_name in dir(module):
             if class_name.endswith("Suite") and isclass(getattr(module, class_name)):
@@ -78,8 +83,10 @@ class ValidationsEngine:
         self, validations_suites_root_path: str
     ) -> List[BaseValidationSuitesExecutor]:
         """
+        Import suites' modules and loads a list with their classes.
+
         Get each suite file, imports it as a python module and loads the
-         suite class
+         suite class.
         """
         all_validation_suites_classes = []
         for suite_path in self._list_validation_suites_files(
@@ -91,24 +98,27 @@ class ValidationsEngine:
 
         return all_validation_suites_classes
 
-    def set_suites_have_failures(self, param, messages=None):
-        """Merges previous state with new one"""
+    def set_suites_have_failures(self, param: bool, messages: List[str] = None) -> None:
+        """Merges previous state with new one."""
         self._suites_have_failures |= param
         if messages:
             self.error_messages.extend(messages)
 
-    def get_suites_have_failures(self):
+    def _get_suites_have_failures(self) -> bool:
         return self._suites_have_failures
 
-    def set_connections_auth_params(self, connections_auth_params) -> None:
+    def set_connections_auth_params(
+        self, connections_auth_params: Dict[str, Any]
+    ) -> None:
+        """Setter of connections_auth_params."""
         self.connections_auth_params = connections_auth_params
 
-    def get_validation_suites(self) -> List[BaseValidationSuitesExecutor]:
+    def _get_validation_suites(self) -> List[BaseValidationSuitesExecutor]:
         return self._validation_suites
 
-    def handle_errors(self):
-        """Ensures (raises) a failure in the end of all validations"""
-        if self.get_suites_have_failures():
+    def handle_errors(self) -> None:
+        """Ensures (raises) a failure in the end of all validations."""
+        if self._get_suites_have_failures():
             send_status = SlackHelper.send_slack_errors(self.error_messages)
 
             if not send_status or any(
@@ -120,11 +130,13 @@ class ValidationsEngine:
 
     def run_validation_suites(self) -> None:
         """
-        Main method. Runs all validations from Suite classes and raises an
-         error if some validation failed.
+        The main method.
+
+        Runs all validations from Suite classes and raises an error if some
+         validation failed.
         """
-        for validation_suite in self.get_validation_suites():
-            v = validation_suite(auth=self.connections_auth_params)
+        for validation_suite in self._get_validation_suites():
+            v = validation_suite(auth=self.connections_auth_params)  # type: ignore
             v.run()
             self.set_suites_have_failures(
                 v.get_suite_validation_has_failures(),
