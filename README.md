@@ -15,27 +15,44 @@ _Engine for creating and running validation suites for general purposes_
 |-----------------------------------------------------------------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | ![Test](https://github.com/quintoandar/validations-engine/workflows/Test/badge.svg) | ![Publish](https://github.com/quintoandar/validations-engine/workflows/Publish/badge.svg) | [![Documentation Status](https://readthedocs.org/projects/validations-engine/badge/?version=latest)](https://validations-engine.readthedocs.io/en/latest/?badge=latest) | [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=validations-engine&metric=alert_status)](https://sonarcloud.io/dashboard?id=validations-engine) |
 
-
-This library supports Python version 3.7+.
-
 To check library main features you can check [Validations Engine's Documentation](https://validations-engine.readthedocs.io/en/latest/), which is hosted by Read the Docs.
 
-An example of how to use the library getting configurations:
-```python
-from validations_engine.validations_engine import my_lib
+### Purpose
 
-def foo(arg):
-    return my_lib.awesome_function(arg)  # change me
-```
+**Simulate** key communication/integration lines between services that compose our ELT jobs, to guarantee there is no failures in the pipeline (and **early catch** eventual failures).
 
-## Requirements and Installation
-The Validations Engine depends on **Python 3.7+**
+### **Why?**
 
-[Python Package Index](https://pypi.org/project/validations-engine/) hosts reference to a pip-installable module of this library, using it is as straightforward as including it on your project's requirements.
+During the pipeline execution every day early mornings, we usually have some problems related to:
 
-```bash
-pip install validations-engine
-```
+- Network access (like VPC, peering, etc)
+- API failures
+- Database connections failures (access, authentication, networking related errors)
+- Failures in Python requirements installing (via init scripts) and its dependencies installing
+- DML errors
+- and the list goes on 😿 🙈
+
+Eventually, there are modifications in Quintoandar's platform (infra, services, etc) that lead to bugs and failures in the ELT daily runs. Also, eventual external factors (like a lib dependency update) may also lead to such problems. And we definitely cannot rely on the official daily executions to validate if everything will run accordingly.
+
+It is pretty important therefore that we have some internal validation processes to guarantee (*as much as we can*) that the pipeline will run without failures the next day. For example, we can be proactive and force the errors before the moment they are supposed to happen by simulating some operations we are supposed to do in our ELT Spark Jobs.
+
+### Engine core concepts
+
+**Executors**
+
+Executors are responsible for executing all the respective validation suites that inherit them (because it inherits from `BaseValidationSuitesExecutor`).
+Also, they may contain default and generic code and tests for a group of suites.
+
+We may have executors for validating *Databases* and another for validating *APIs* for example.
+
+**Validation Suites**
+
+A validation suite works like a python unit test class. You may define validation methods following the name pattern and these methods will be run.
+
+Inside the validation suite, you may define the validation methods you want to implement, for each source for example.
+You are free to implement a custom validation inside your suite, but if this is a common validation we may want to generalize it and use the `DatabaseValidationSuitesExecutor` for doing the validation. Every suite must inherit from an executor, in order to be parsed and executed.
+
+The `validation_*` methods inside the suite and inside the executor classes will run automatically by the validation engine.
 
 ## License
 [Apache License 2.0](https://github.com/quintoandar/validations-engine/blob/main/LICENSE)

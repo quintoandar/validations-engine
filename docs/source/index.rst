@@ -1,9 +1,13 @@
 Validations Engine
 ===========================
+Made with |:heart:| by the **Data Engineering** team from `QuintoAndar <https://github.com/quintoandar/>`_.
 
 Engine for creating and running validation suites for general purposes
 
-<index content>
+How to use
+----------
+
+<Get from README>
 
 
 Navigation
@@ -14,3 +18,4 @@ Navigation
 
    getstarted
    modules
+   new_validation_suite

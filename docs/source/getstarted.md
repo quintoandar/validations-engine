@@ -15,8 +15,11 @@ Or after listing `validations-engine` in your `requirements.txt` file:
 pip install -r requirements.txt
 ```
 
+## Adding a new validation suite
+Check [here](new_validation_suite.md) the instructions to create a new validation suite.
+
 ## Discovering Validations Engine
 
 Click on the following links to open the [examples](https://github.com/quintoandar/validations-engine/tree/main/examples):
 
-**[#1 Example 1](https://github.com/quintoandar/validations-engine/blob/main/examples/example.py)**
+**[#1 Example](https://github.com/quintoandar/validations-engine/blob/main/examples/example.py)**
