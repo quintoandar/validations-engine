@@ -4,7 +4,6 @@ __package_name__ = "validations-engine"
 __version__ = "0.0.1"
 __repository_url__ = "https://github.com/quintoandar/validations-engine"
 
-
 with open("README.md") as readme_file:
     readme = readme_file.read()
 
@@ -19,7 +18,7 @@ setup(
     description="Engine for creating and running validation suites for general purposes",
     long_description=readme,
     long_description_content_type="text/markdown",
-    keywords=["python"],
+    keywords=["python", "validations", "validations-engine"],
     version=__version__,
     url=__repository_url__,
     packages=find_packages(
