@@ -4,6 +4,7 @@ __package_name__ = "validations-engine"
 __version__ = "0.0.1"
 __repository_url__ = "https://github.com/quintoandar/validations-engine"
 
+
 with open("README.md") as readme_file:
     readme = readme_file.read()
 
