@@ -1,5 +1,7 @@
 # Validations Engine
-_Engine for creating and running validations for general purposes_
+_Engine for creating and running validations for general purposes._
+
+<img height="200" src="validations_engine_logo.png" />
 
 [![Release](https://img.shields.io/github/v/release/quintoandar/validations-engine)]((https://pypi.org/project/validations-engine/))
 ![Python Version](https://img.shields.io/badge/python-3.7%20%7C%203.8-brightgreen.svg)
