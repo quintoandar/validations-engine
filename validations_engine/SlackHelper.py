@@ -50,7 +50,7 @@ class SlackHelper:
         divider_block = {"type": "divider"}
 
         for channel, error_list in error_dict.items():
-            payload = {"blocks": [], "unfurl_links": True}
+            payload = {"blocks": []}
             for error_msg in error_list:
                 markdown_block = copy.deepcopy(markdown_block_template)
                 markdown_block["text"]["text"] = error_msg  # type: ignore
