@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 __package_name__ = "validations_engine"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __repository_url__ = "https://github.com/quintoandar/validations-engine"
 
 
@@ -22,12 +22,7 @@ setup(
     keywords=["python", "validations", "validations-engine"],
     version=__version__,
     url=__repository_url__,
-    packages=find_packages(
-        include=[
-            "validations_engine",
-            "validations_engine.*",
-        ]
-    ),
+    packages=find_packages(include=["validations_engine", "validations_engine.*"]),
     author="QuintoAndar",
     install_requires=requirements,
     python_requires=">=3.7, <4",
