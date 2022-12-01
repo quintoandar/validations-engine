@@ -29,7 +29,7 @@ class SlackHelper:
                         f" the webhook url: channel:{channel}, payload:{payload},"
                         f" error: {e}"
                     )
-                    response_success |= False
+                    response_success = False
         return response_success
 
     @staticmethod
