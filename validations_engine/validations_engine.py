@@ -8,7 +8,8 @@ from os.path import dirname
 from types import ModuleType
 from typing import List, Any, Dict
 
-from validations_engine.SlackHelper import SlackHelper
+from validations_engine.GchatHelper import GchatHelper
+from validations_engine.message import Message
 from validations_engine.base_validation_suites_executor import (
     BaseValidationSuitesExecutor,
 )
@@ -98,7 +99,7 @@ class ValidationsEngine:
 
         return all_validation_suites_classes
 
-    def set_suites_have_failures(self, param: bool, messages: List[str] = None) -> None:
+    def set_suites_have_failures(self, param: bool, messages: List[Message] = None) -> None:
         """Merges previous state with new one."""
         self._suites_have_failures |= param
         if messages:
@@ -119,7 +120,7 @@ class ValidationsEngine:
     def handle_errors(self) -> None:
         """Ensures (raises) a failure in the end of all validations."""
         if self._get_suites_have_failures():
-            send_status = SlackHelper.send_slack_errors(self.error_messages)
+            send_status = GchatHelper.send_messages(self.error_messages)
 
             if not send_status or any(
                 channel is None for _, channel in self.error_messages

@@ -5,7 +5,7 @@ import logging
 from validations_engine.message import Message
 
 
-class GChatService:
+class GchatHelper:
     @staticmethod
     def send_message(message: Message) -> bool:
         """
@@ -33,5 +33,5 @@ class GChatService:
         were sent successfully, False otherwise.
         """
 
-        all_success = all([GChatService.send_message(message) for message in messages])
+        all_success = all([GchatHelper.send_message(message) for message in messages])
         return all_success
