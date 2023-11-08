@@ -9,7 +9,6 @@ from validations_engine.message import Message
 logging.getLogger().setLevel(INFO)
 
 
-
 class BaseValidationSuitesExecutor:
     """Validation suites executors abstract class."""
 
@@ -61,9 +60,7 @@ class BaseValidationSuitesExecutor:
                 logging.info("m=run, msg=:::: VALIDATION SUCCEEDED ::::")
             except Exception as e:
                 if self.errors == [] and hasattr(self, "MSG_HEADER"):
-                    self.errors.append(
-                        (self.MSG_HEADER, self.__dict__.get("CHANNEL"))
-                    )
+                    self.errors.append((self.MSG_HEADER, self.__dict__.get("CHANNEL")))
 
                 default_message = (
                     f":exclamation: Error validating with "
@@ -71,7 +68,9 @@ class BaseValidationSuitesExecutor:
                 )
                 error_message = self.__dict__.get("MSG", default_message)
                 gchat_webhook = str(self.__dict__.get("CHANNEL"))
-                gchat_message_error = Message(content=error_message, destination=gchat_webhook)
+                gchat_message_error = Message(
+                    content=error_message, destination=gchat_webhook
+                )
                 self.errors.append((gchat_message_error))
 
                 self._set_suite_validation_has_failures(True)
