@@ -99,7 +99,9 @@ class ValidationsEngine:
 
         return all_validation_suites_classes
 
-    def set_suites_have_failures(self, param: bool, messages: List[Message] = None) -> None:
+    def set_suites_have_failures(
+        self, param: bool, messages: List[Message] = None
+    ) -> None:
         """Merges previous state with new one."""
         self._suites_have_failures |= param
         if messages:

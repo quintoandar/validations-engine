@@ -4,7 +4,7 @@ import logging
 from logging import INFO
 from typing import Dict, Any, List, Tuple
 
-from validations_engine.GchatHelper import Message
+from validations_engine.message import Message
 
 logging.getLogger().setLevel(INFO)
 
@@ -70,7 +70,7 @@ class BaseValidationSuitesExecutor:
                     f"{validate_method_name} on {self.__class__.__name__}"
                 )
                 error_message = self.__dict__.get("MSG", default_message)
-                gchat_webhook = self.__dict__.get("CHANNEL")
+                gchat_webhook = str(self.__dict__.get("CHANNEL"))
                 gchat_message_error = Message(content=error_message, destination=gchat_webhook)
                 self.errors.append((gchat_message_error))
 
