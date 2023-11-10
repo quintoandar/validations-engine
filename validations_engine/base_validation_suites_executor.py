@@ -61,8 +61,8 @@ class BaseValidationSuitesExecutor:
             except Exception as e:
                 if self.errors == [] and hasattr(self, "GCHAT_MSG_HEADER"):
                     gchat_header_message_error = Message(
-                        content=self.GCHAT_MSG_HEADER, 
-                        destination=self.__dict__.get("GCHAT_CHANNEL")
+                        content=self.GCHAT_MSG_HEADER,
+                        destination=self.__dict__.get("GCHAT_CHANNEL"),
                     )
                     self.errors.append(gchat_header_message_error)
 
