@@ -12,19 +12,25 @@ class GchatHelper:
         Sends a message to a GChat webhook. Returns True if the message was sent
         successfully, False otherwise.
         """
-
-        payload = {"text": message.content}
-        response = requests.post(message.destination, json=payload)
-        try:
-            response.raise_for_status()
-        except Exception as e:
-            logging.warning(
-                f"m=send_message, msg=Gchat message was not sent, check"
-                f" the webhook url: {message.destination}, payload:{payload},"
-                f" error: {e}"
-            )
-            return False
-        return True
+        if message.destination is not None:
+          payload = {"text": message.content}
+          response = requests.post(message.destination, json=payload)
+          try:
+              response.raise_for_status()
+          except Exception as e:
+              logging.warning(
+                  f"m=send_message, msg=Gchat message was not sent, check"
+                  f" the webhook url: {message.destination}, payload:{payload},"
+                  f" error: {e}"
+              )
+              return False
+          return True
+        
+        logging.warning(
+                  f"m=send_message, msg=Gchat message was not sent"
+                  f" the destination is empty!"
+              )
+        return False
 
     @staticmethod
     def send_messages(messages: List[Message]) -> bool:
