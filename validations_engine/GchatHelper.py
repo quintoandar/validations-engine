@@ -1,3 +1,4 @@
+"""Gchat communications module."""
 from typing import List
 import requests
 import logging
@@ -6,11 +7,14 @@ from validations_engine.message import Message
 
 
 class GchatHelper:
+    """Gchat Helper class."""
+
     @staticmethod
     def send_message(message: Message) -> bool:
         """
-        Sends a message to a GChat webhook. Returns True if the message was sent
-        successfully, False otherwise.
+        Sends a message to a GChat webhook.
+
+        :returns: flag stating if messages were sent or not
         """
         if message.destination is not None:
             payload = {"text": message.content}
@@ -35,9 +39,9 @@ class GchatHelper:
     @staticmethod
     def send_messages(messages: List[Message]) -> bool:
         """
-        Sends a list of messages to a GChat webhook. Returns True if all messages
-        were sent successfully, False otherwise.
-        """
+        Sends a list of messages to a GChat webhook.
 
+        :returns: flag stating if messages were sent successfully or not.
+        """
         all_success = all([GchatHelper.send_message(message) for message in messages])
         return all_success
