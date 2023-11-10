@@ -60,7 +60,11 @@ class BaseValidationSuitesExecutor:
                 logging.info("m=run, msg=:::: VALIDATION SUCCEEDED ::::")
             except Exception as e:
                 if self.errors == [] and hasattr(self, "GCHAT_MSG_HEADER"):
-                    self.errors.append((self.GCHAT_MSG_HEADER, self.__dict__.get("GCHAT_CHANNEL")))
+                    gchat_header_message_error = Message(
+                        content=self.GCHAT_MSG_HEADER, 
+                        destination=self.__dict__.get("GCHAT_CHANNEL")
+                    )
+                    self.errors.append(gchat_header_message_error)
 
                 default_message = (
                     f":exclamation: Error validating with "
