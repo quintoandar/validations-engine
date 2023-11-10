@@ -1,7 +1,8 @@
 from dataclasses import dataclass
+from typing import Union
 
 
 @dataclass
 class Message:
     content: str
-    destination: str
+    destination: Union[str, None]

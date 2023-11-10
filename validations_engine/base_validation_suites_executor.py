@@ -12,7 +12,7 @@ logging.getLogger().setLevel(INFO)
 class BaseValidationSuitesExecutor:
     """Validation suites executors abstract class."""
 
-    MSG_HEADER = ""
+    GCHAT_MSG_HEADER = ""
 
     def __init__(self, auth: Dict[str, Any] = None) -> None:
         self.auth = auth
@@ -59,19 +59,19 @@ class BaseValidationSuitesExecutor:
 
                 logging.info("m=run, msg=:::: VALIDATION SUCCEEDED ::::")
             except Exception as e:
-                if self.errors == [] and hasattr(self, "MSG_HEADER"):
-                    self.errors.append((self.MSG_HEADER, self.__dict__.get("CHANNEL")))
+                if self.errors == [] and hasattr(self, "GCHAT_MSG_HEADER"):
+                    self.errors.append((self.GCHAT_MSG_HEADER, self.__dict__.get("GCHAT_CHANNEL")))
 
                 default_message = (
                     f":exclamation: Error validating with "
                     f"{validate_method_name} on {self.__class__.__name__}"
                 )
-                error_message = self.__dict__.get("MSG", default_message)
-                gchat_webhook = str(self.__dict__.get("CHANNEL"))
+                error_message = self.__dict__.get("GCHAT_MSG", default_message)
+                gchat_webhook = self.__dict__.get("GCHAT_CHANNEL")
                 gchat_message_error = Message(
                     content=error_message, destination=gchat_webhook
                 )
-                self.errors.append((gchat_message_error))
+                self.errors.append(gchat_message_error)
 
                 self._set_suite_validation_has_failures(True)
                 logging.error(e)
