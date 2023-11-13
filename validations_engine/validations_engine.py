@@ -125,7 +125,7 @@ class ValidationsEngine:
             send_status = GchatHelper.send_messages(self.error_messages)
 
             if not send_status or any(
-                channel is None for _, channel in self.error_messages
+                error.destination is None for error in self.error_messages
             ):
                 raise AssertionError(
                     "One or more validations failed! (Please, check the logs)"
