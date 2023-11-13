@@ -59,13 +59,6 @@ class BaseValidationSuitesExecutor:
 
                 logging.info("m=run, msg=:::: VALIDATION SUCCEEDED ::::")
             except Exception as e:
-                logging.info(
-                    "m=except_header, msg=validando varias paradas\n"
-                    f"hasattr = {hasattr(self, 'GCHAT_MSG_HEADER')}\n"
-                    f"self.erros = {self.errors}\n"
-                    f"content = {self.GCHAT_MSG_HEADER}\n"
-                    f"destination = {self.__dict__.get('GCHAT_CHANNEL')}\n"
-                )
                 if self.errors == [] and hasattr(self, "GCHAT_MSG_HEADER"):
                     gchat_header_message_error = Message(
                         content=self.GCHAT_MSG_HEADER,
@@ -74,19 +67,13 @@ class BaseValidationSuitesExecutor:
                     self.errors.append(gchat_header_message_error)
 
                 default_message = (
-                    f":exclamation: Error validating with "
+                    f"⚠️ Error validating with "
                     f"{validate_method_name} on {self.__class__.__name__}"
                 )
                 error_message = self.__dict__.get("GCHAT_MSG", default_message)
                 gchat_webhook = self.__dict__.get("GCHAT_CHANNEL")
                 gchat_message_error = Message(
                     content=error_message, destination=gchat_webhook
-                )
-                logging.info(
-                    "m=appendando gchat_message_error\n"
-                    f"error_message = {error_message}\n"
-                    f"destination = {gchat_webhook}\n"
-                    f"message_class = {gchat_message_error}\n"
                 )
                 self.errors.append(gchat_message_error)
 
