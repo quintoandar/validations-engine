@@ -67,7 +67,7 @@ class BaseValidationSuitesExecutor:
                     self.errors.append(gchat_header_message_error)
 
                 default_message = (
-                    f"⚠️ Error validating with "
+                    "⚠️ Error validating with "
                     f"{validate_method_name} on {self.__class__.__name__}"
                 )
                 error_message = self.__dict__.get("GCHAT_MSG", default_message)
