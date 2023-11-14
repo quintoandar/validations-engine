@@ -31,8 +31,8 @@ class GchatHelper:
             return True
 
         logging.warning(
-            f"m=send_message, msg=Gchat message was not sent"
-            f" the destination is empty!"
+            "m=send_message, msg=Gchat message was not sent. "
+            "The destination is empty!"
         )
         return False
 
