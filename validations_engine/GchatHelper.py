@@ -23,7 +23,7 @@ class GchatHelper:
                 response.raise_for_status()
             except Exception as e:
                 logging.warning(
-                    f"m=send_message, msg=Gchat message was not sent, check"
+                    "m=send_message, msg=Gchat message was not sent, check"
                     f" the webhook url: {message.destination}, payload:{payload},"
                     f" error: {e}"
                 )
