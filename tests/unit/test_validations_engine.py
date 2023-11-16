@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from validations_engine.SlackHelper import SlackHelper
+from validations_engine.GchatHelper import GchatHelper
 from validations_engine.validations_engine import ValidationsEngine
 
 
@@ -29,7 +29,7 @@ class TestValidationsEngines:
         mock_set_suites_have_failures.assert_called_once()
         mock_handle_errors.assert_called_once_with()
 
-    @mock.patch.object(SlackHelper, "send_slack_errors")
+    @mock.patch.object(GchatHelper, "send_messages")
     @mock.patch.object(ValidationsEngine, "_get_suites_have_failures")
     def test_handle_errors_with_errors_without_slack_notification(
         self, mock_get_suites_have_failures, mock_send_slack_errors, validations_engine
@@ -50,7 +50,7 @@ class TestValidationsEngines:
             validations_engine.error_messages
         )
 
-    @mock.patch.object(SlackHelper, "send_slack_errors")
+    @mock.patch.object(GchatHelper, "send_messages")
     @mock.patch.object(ValidationsEngine, "_get_suites_have_failures")
     def test_handle_errors_with_errors_with_slack_notification(
         self, mock_get_suites_have_failures, mock_send_slack_errors, validations_engine
