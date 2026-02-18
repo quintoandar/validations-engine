@@ -1,4 +1,7 @@
 # Environment =================================================================
+CONSTRAINTS_FILE ?=
+PIP_CONSTRAINT_OPT := $(if $(strip $(CONSTRAINTS_FILE)),-c $(CONSTRAINTS_FILE),)
+
 .PHONY: environment
 ## create virtual environment for validations-engine
 environment:
@@ -10,22 +13,22 @@ environment:
 .PHONY: requirements-test
 ## install test requirements
 requirements-test:
-	@PYTHONPATH=. python -m pip install -r requirements.test.txt
+	@PYTHONPATH=. python -m pip install $(PIP_CONSTRAINT_OPT) -r requirements.test.txt
 
 .PHONY: requirements-lint
 ## install lint requirements
 requirements-lint:
-	@PYTHONPATH=. python -m pip install -r requirements.lint.txt
+	@PYTHONPATH=. python -m pip install $(PIP_CONSTRAINT_OPT) -r requirements.lint.txt
 
 .PHONY: requirements-dev
 ## install development requirements
 requirements-dev:
-	@PYTHONPATH=. python -m pip install -U -r requirements.dev.txt
+	@PYTHONPATH=. python -m pip install -U $(PIP_CONSTRAINT_OPT) -r requirements.dev.txt
 
 .PHONY: requirements-minimum
 ## install prod requirements
 requirements-minimum:
-	@PYTHONPATH=. python -m pip install -U -r requirements.txt
+	@PYTHONPATH=. python -m pip install -U $(PIP_CONSTRAINT_OPT) -r requirements.txt
 
 .PHONY: requirements-all
 ## install all requirements
@@ -34,7 +37,7 @@ requirements-all: requirements-test requirements-lint requirements-dev requireme
 .PHONY: requirements-docs
 ## install docs requirements
 requirements-docs:
-	@PYTHONPATH=. python -m pip install -r docs/requirements.docs.txt
+	@PYTHONPATH=. python -m pip install $(PIP_CONSTRAINT_OPT) -r docs/requirements.docs.txt
 
 # Test ========================================================================
 
@@ -81,7 +84,7 @@ type-check:
 	@echo "Mypy"
 	@echo "===="
 	@echo ""
-	@python -m mypy validations_engine
+	@python -m mypy --config-file setup.cfg --package validations_engine
 
 .PHONY: checks
 ## run all code checks
@@ -90,7 +93,7 @@ checks: type-check style-check
 .PHONY: apply-style
 ## run black to fix code style
 apply-style:
-	@python -m black -t py36 --exclude="build/|buck-out/|dist/|_build/|pip/|env/|\.pip/|\.git/|\.hg/|\.mypy_cache/|\.tox/|\.venv/" .
+	@python -m black --exclude="build/|buck-out/|dist/|_build/|pip/|env/|\.pip/|\.git/|\.hg/|\.mypy_cache/|\.tox/|\.venv/" .
 
 # Packaging ===================================================================
 

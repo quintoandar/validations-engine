@@ -1,8 +1,9 @@
 """Suites base executor."""
+
 import inspect
 import logging
 from logging import INFO
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List, Optional, Tuple
 
 from validations_engine.message import Message
 
@@ -14,7 +15,7 @@ class BaseValidationSuitesExecutor:
 
     GCHAT_MSG_HEADER = ""
 
-    def __init__(self, auth: Dict[str, Any] = None) -> None:
+    def __init__(self, auth: Optional[Dict[str, Any]] = None) -> None:
         self.auth = auth
         self._suite_validation_has_failures = False
         self.errors = []  # type: ignore

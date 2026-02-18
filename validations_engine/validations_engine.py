@@ -1,4 +1,5 @@
 """Validations Engine main class."""
+
 import importlib
 import pathlib
 import sys
@@ -6,7 +7,7 @@ from glob import glob
 from inspect import isclass
 from os.path import dirname
 from types import ModuleType
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 
 from validations_engine.GchatHelper import GchatHelper
 from validations_engine.message import Message
@@ -100,7 +101,7 @@ class ValidationsEngine:
         return all_validation_suites_classes
 
     def set_suites_have_failures(
-        self, param: bool, messages: List[Message] = None
+        self, param: bool, messages: Optional[List[Message]] = None
     ) -> None:
         """Merges previous state with new one."""
         self._suites_have_failures |= param

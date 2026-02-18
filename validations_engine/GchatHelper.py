@@ -1,4 +1,5 @@
 """Gchat communications module."""
+
 from typing import List
 import requests
 import logging
